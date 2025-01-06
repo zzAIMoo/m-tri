@@ -1,0 +1,46 @@
+#:set default_font 'DejaVuSans'
+
+<MangaCard>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: dp(60)
+
+    canvas.before:
+        Color:
+            rgba: root.status_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'horizontal'
+        padding: dp(10)
+        spacing: dp(10)
+
+        # AsyncImage:
+        #    source: root.thumbnail_url
+        #    size_hint: (None, 1)
+        #    width: dp(50) if root.show_thumbnail else 0
+        #    opacity: 1 if root.show_thumbnail else 0
+        #    allow_stretch: True
+        #    keep_ratio: True
+
+        Label:
+            text: root.title
+            text_size: self.width, None
+            halign: 'left'
+            valign: 'middle'
+            size_hint_x: 0.6
+            font_name: default_font
+
+        Label:
+            text: root.tracking_status
+            size_hint_x: 0.2
+            halign: 'center'
+            font_name: default_font
+
+        Label:
+            text: root.chapter_text
+            size_hint_x: 0.2
+            halign: 'right'
+            font_name: default_font

@@ -1,0 +1,140 @@
+#:include src/app/ui/kv/manga_card.kv
+
+<TrackerImporter>:
+    orientation: 'horizontal'
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_x: 0.3
+        padding: 10
+        spacing: 10
+        canvas.before:
+            Color:
+                rgba: 0.15, 0.15, 0.15, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: 'Mihon Tracker\nImporter'
+            size_hint_y: None
+            height: 100
+            font_size: 24
+            bold: True
+            halign: 'center'
+
+        Label:
+            text: 'Select Tracker:'
+            size_hint_y: None
+            height: 40
+            font_size: 18
+
+        ScrollView:
+            BoxLayout:
+                id: tracker_list
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 10
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 15
+        canvas.before:
+            Color:
+                rgba: 0.2, 0.2, 0.2, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            id: welcome_label
+            text: 'Welcome to Mihon Tracker Importer!'
+            size_hint_y: None
+            height: 50
+            font_size: 24
+
+        BoxLayout:
+            id: login_frame
+            orientation: 'vertical'
+            size_hint_y: None
+            height: 120
+            spacing: 10
+            opacity: 0
+
+            TextInput:
+                id: token_input
+                hint_text: 'Enter your API token'
+                size_hint_y: None
+                height: 40
+                multiline: False
+                opacity: 1
+
+            Button:
+                id: login_button
+                text: 'Login'
+                size_hint_y: None
+                height: 40
+                on_release: root.login()
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: 10
+
+            Button:
+                id: import_button
+                text: 'Import Manga List'
+                size_hint_y: None
+                height: 50
+                disabled: True
+                on_release: root.import_file()
+
+            BoxLayout:
+                size_hint_y: None
+                height: 40
+                spacing: 20
+                padding: [20, 0]
+
+                CheckBox:
+                    id: nsfw_filter
+                    size_hint_x: None
+                    width: 30
+                    active: False
+                    on_active: root.toggle_nsfw_filter(self.active)
+
+                Label:
+                    text: 'Hide NSFW Content'
+                    size_hint_x: None
+                    width: self.texture_size[0]
+                    font_name: default_font
+
+                Button:
+                    text: 'Show Thumbnails'
+                    size_hint_x: None
+                    width: dp(150)
+                    on_release: root.toggle_thumbnails()
+
+                Spinner:
+                    id: category_filter
+                    size_hint_x: None
+                    width: 250
+                    text: 'All Categories'
+                    values: ['All Categories']
+                    on_text: root.on_category_selected(self.text)
+                    font_name: default_font
+
+            Button:
+                text: 'Auto Match'
+                size_hint_y: None
+                height: dp(40)
+                on_release: root.show_matching_popup()
+
+            ScrollView:
+                BoxLayout:
+                    id: manga_list
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: 10
+                    padding: 10

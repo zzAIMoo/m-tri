@@ -1,0 +1,88 @@
+#:import Factory kivy.factory.Factory
+
+<AsyncImage>:
+    mipmap: True
+    anim_delay: 0.05
+    nocache: True
+    allow_stretch: True
+    keep_ratio: True
+
+<MangaDetailsPopup>:
+    title: 'Manga Details'
+    size_hint: 0.8, 0.9
+    background: ''
+    background_color: 0.12, 0.12, 0.12, 1
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(20)
+        padding: dp(25)
+
+        canvas.before:
+            Color:
+                rgba: 0.12, 0.12, 0.12, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            padding: [dp(2), dp(2)]
+
+            canvas.before:
+                Color:
+                    rgba: 0.18, 0.18, 0.18, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(8)]
+
+            BoxLayout:
+                size_hint_x: 0.85
+                padding: [dp(15), 0]
+
+                TextInput:
+                    id: search_input
+                    text: root.search_query
+                    multiline: False
+                    background_normal: ''
+                    background_active: ''
+                    padding: [dp(10), dp(12)]
+                    font_size: '16sp'
+                    foreground_color: 0.9, 0.9, 0.9, 1
+                    cursor_color: 0.9, 0.9, 0.9, 1
+                    hint_text: 'Search manga...'
+                    hint_text_color: 0.5, 0.5, 0.5, 1
+                    on_text_validate: root.search_mal(self.text)
+
+            Button:
+                text: 'Search'
+                size_hint_x: 0.15
+                background_normal: ''
+                background_color: 0.2, 0.6, 0.9, 1
+                color: 1, 1, 1, 1
+                font_size: '16sp'
+                bold: True
+                on_release: root.search_mal(search_input.text)
+                canvas.before:
+                    Color:
+                        rgba: 0.2, 0.6, 0.9, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [0, dp(8), dp(8), 0]
+
+        ScrollView:
+            do_scroll_x: False
+            bar_width: dp(8)
+            bar_color: 0.2, 0.6, 0.9, 1
+            bar_inactive_color: 0.2, 0.6, 0.9, 0.5
+            effect_cls: 'ScrollEffect'
+
+            BoxLayout:
+                id: results_list
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(2)
