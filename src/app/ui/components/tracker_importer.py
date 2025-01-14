@@ -3,7 +3,6 @@ from kivy.lang import Builder
 from kivy.uix.button import Button
 from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.popup import Popup
-from kivy.properties import StringProperty, ListProperty, BooleanProperty, ObjectProperty, NumericProperty
 from typing import Dict, Optional
 from pathlib import Path
 import json
@@ -266,7 +265,8 @@ class TrackerImporter(BoxLayout):
             tracker=self.tracker,
             thumbnail_url=thumbnail_url,
             url=manga.get("url", ""),
-            show_thumbnail=self.show_thumbnails
+            show_thumbnail=self.show_thumbnails,
+            manga_data=manga
         )
 
     def update_manga_list(self):
@@ -400,3 +400,15 @@ class TrackerImporter(BoxLayout):
         self.show_thumbnails = not self.show_thumbnails
         for card in self.manga_cards:
             card.show_thumbnail = self.show_thumbnails
+
+    def get_manga_from_json(self, url):
+        """Get manga data from JSON file using URL"""
+        try:
+            with open('data/mihon_export.json', 'r') as f:
+                data = json.load(f)
+                for manga in data:
+                    if manga.get('url') == url:
+                        return manga
+        except Exception as e:
+            print(f"Error reading JSON file: {str(e)}")
+        return None

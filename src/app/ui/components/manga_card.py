@@ -6,6 +6,7 @@ from kivy.loader import Loader
 from functools import partial
 from kivy.clock import Clock
 from urllib.parse import quote
+from kivy.app import App
 
 class MangaCard(BoxLayout):
     title = StringProperty('')
@@ -17,11 +18,11 @@ class MangaCard(BoxLayout):
     url = StringProperty('')
     is_nsfw = BooleanProperty(False)
     categories = ListProperty([])
-    mal_id = NumericProperty(0)
+    mal_id = NumericProperty(0, force_int=True)
     tracker = ObjectProperty(None)
     show_thumbnail = BooleanProperty(False)
 
-    def __init__(self, **kwargs):
+    def __init__(self, title, url, tracking_status="Untracked", chapter_text="0/?", mal_id=None, tracker=None, manga_data=None, **kwargs):
         self.status_colors = {
             'Reading': [0.2, 0.6, 0.2, 1],
             'Completed': [0.2, 0.4, 0.8, 1],
@@ -30,8 +31,23 @@ class MangaCard(BoxLayout):
             'Plan to Read': [0.4, 0.4, 0.4, 1],
             'Untracked': [0.3, 0.3, 0.3, 1]
         }
-        self.mal_id = int(kwargs.get('mal_id', 0))
+
         super().__init__(**kwargs)
+        self.title = title
+        self.url = url
+        self.tracking_status = tracking_status
+        self.chapter_text = chapter_text
+        self.mal_id = int(mal_id)
+        self.tracker = tracker
+
+        if "?" in self.chapter_text and manga_data:
+            try:
+                total_chapters = len(manga_data.get('chapters', []))
+                current_chapters = self.chapter_text.split('/')[0]
+                self.chapter_text = f"{current_chapters}/{total_chapters}"
+            except Exception as e:
+                print(f"Failed to get total chapters for {self.title}: {str(e)}")
+
         self.status_color = self.status_colors.get(self.tracking_status, self.status_colors['Untracked'])
         if self.show_thumbnail:
             Clock.schedule_once(lambda dt: self.preload_image(), 0)

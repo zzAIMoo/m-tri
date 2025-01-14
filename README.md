@@ -1,6 +1,6 @@
 # Mihon Tracker Importer
 
-This is a tool to track manga entries on your favorite manga tracker.
+This is a tool to track manga entries on your favorite manga tracker. Works with Mihon and all its forks that don't change backup format
 
 ## Requirements
 
@@ -25,6 +25,13 @@ pipenv install
 ```bash
 make run #(or make dev to run in dev mode)
 ```
+
+## Current Features
+
+- Single Manga Entry Update
+- Auto Matching Manga Entries to Tracker Entries (Fuzzy Search Implemented)
+- Auto Tracking Manga Entries
+- WIP: Import/Export .tachibk files
 
 ## Trackers
 

@@ -3,6 +3,7 @@ from pathlib import Path
 from kivy.resources import resource_add_path
 from kivy.core.text import LabelBase
 from dotenv import load_dotenv
+from kivy.config import Config
 
 resource_add_path(os.path.join(os.path.dirname(__file__), './assets/fonts'))
 
@@ -24,3 +25,5 @@ if not MAL_CLIENT_SECRET:
     raise ValueError("MAL_CLIENT_SECRET not found in .env file")
 
 CONFIG_FILE = Path(os.path.dirname(__file__) + '/generated/mihon_tracker_config.json')
+
+Config.set('kivy', 'default_font', ['DejaVuSans'])
